@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - WareFlow</title>
+    <link rel="stylesheet" href="employee_styles.css">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <header class="navbar">
+        <div class="header-container">
+            <div class="brand">
+                <img src="logo.png" alt="WareFlow Logo" class="brand-logo">
+                <div class="brand-text">
+                    <h1 class="logo">WareFlow</h1>
+                    <p class="tagline">Smart Storage. Seamless Logistics.</p>
+                </div>
+            </div>
+            <div class="user-nav">
+                <div class="user-profile">
+                    <span class="user-avatar">🛠️</span>
+                    <div class="user-info">
+                        <span class="user-name" id="empNameDisplay">Staff Member</span>
+                        <span class="user-id" id="empIdDisplay">ID: EMP-4092</span>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-container">
+        
+        <!-- Welcome Banner & Shift Details -->
+        <section class="welcome-card">
+            <div class="welcome-text">
+                <h2>Welcome to Staff Portal</h2>
+                <p>Manage customer orders, warehouse inventory, order picking, and live shipment dispatches.</p>
+            </div>
+            <div class="shift-info-card">
+                <h4>📍 Assigned Branch & Shift</h4>
+                <p id="shiftInfoText">Central Warehouse - Hub A | Shift: Day (Active 🟢)</p>
+                <button class="small-btn" onclick="changeShiftInfo()">✏️ Change Shift / Dept</button>
+            </div>
+        </section>
+
+        <!-- Quick Action Buttons -->
+        <section class="action-bar">
+            <button class="primary-btn" onclick="createNewStockOrder()">+ Receive Inbound Freight</button>
+            <button class="secondary-btn" onclick="quickBatchDispatch()">📦 Quick Batch Dispatch</button>
+            <button class="secondary-btn" onclick="generateInventoryReport()">📊 Export Storage Report</button>
+        </section>
+
+        <!-- Operational Metrics Grid -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">📦</div>
+                <div class="stat-details">
+                    <span class="stat-label">Total Orders</span>
+                    <span class="stat-value" id="totalOrders">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon yellow">⏳</div>
+                <div class="stat-details">
+                    <span class="stat-label">Pending Pick & Pack</span>
+                    <span class="stat-value" id="pendingOrders">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">🚚</div>
+                <div class="stat-details">
+                    <span class="stat-label">Active Dispatches</span>
+                    <span class="stat-value" id="activeShipments">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-details">
+                    <span class="stat-label">Delivered Orders</span>
+                    <span class="stat-value" id="deliveredOrders">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">🏬</div>
+                <div class="stat-details">
+                    <span class="stat-label">Storage Capacity</span>
+                    <span class="stat-value" id="storageCapacity">78% Full</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Fulfillment & Live Status Control -->
+        <section class="section-card">
+            <div class="table-header">
+                <div>
+                    <h3>📋 Order Fulfillment & Live Dispatch Control</h3>
+                    <p class="section-subtext">View customer orders and update status in real time. Changes broadcast live to customer dashboards.</p>
+                </div>
+                <div class="table-controls">
+                    <input type="text" id="searchInput" placeholder="Search order ID, customer, product..." onkeyup="filterOrders()">
+                    <select id="statusFilter" onchange="filterOrders()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Picking">Picking</option>
+                        <option value="Packing">Packing</option>
+                        <option value="Dispatched">Dispatched / In Transit</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Info</th>
+                            <th>Products & Qty</th>
+                            <th>Delivery Location</th>
+                            <th>Current Status</th>
+                            <th>Invoice Status</th>
+                            <th>Fulfillment Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Storage Zones Monitor -->
+        <section class="section-card">
+            <h3>🏭 Warehouse Storage Zones Monitor</h3>
+            <div class="zones-grid">
+                <div class="zone-card">
+                    <div class="zone-header">
+                        <span class="zone-title">Zone A - Heavy Racks</span>
+                        <span class="zone-badge high">85% Full</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill high" style="width: 85%;"></div>
+                    </div>
+                    <p class="zone-info">Industrial Equipment & Heavy Storage</p>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-header">
+                        <span class="zone-title">Zone B - Pallet Stacking</span>
+                        <span class="zone-badge medium">62% Full</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill medium" style="width: 62%;"></div>
+                    </div>
+                    <p class="zone-info">Bulk Crates & Standard Pallets</p>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-header">
+                        <span class="zone-title">Zone C - Cold Storage</span>
+                        <span class="zone-badge low">30% Full</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill low" style="width: 30%;"></div>
+                    </div>
+                    <p class="zone-info">Temperature Controlled (-18°C)</p>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-header">
+                        <span class="zone-title">Zone D - Fast Pick Bay</span>
+                        <span class="zone-badge critical">94% Full</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill critical" style="width: 94%;"></div>
+                    </div>
+                    <p class="zone-info">High Turnover & E-Commerce Items</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 WareFlow Inc. Staff Portal | Smart Storage. Seamless Logistics.</p>
+    </footer>
+
+    <script src="employee_script.js"></script>
+</body>
+</html>

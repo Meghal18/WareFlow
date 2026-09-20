@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - WareFlow</title>
+    <link rel="stylesheet" href="customer_styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="header-container">
+            <div class="brand">
+                <img src="logo.png" alt="WareFlow Logo" class="brand-logo">
+                <div class="brand-text">
+                    <h1 class="logo">WareFlow</h1>
+                    <p class="tagline">Smart Storage. Seamless Logistics.</p>
+                </div>
+            </div>
+            <div class="user-nav">
+                <div class="user-profile">
+                    <span class="user-avatar">👤</span>
+                    <div class="user-info">
+                        <span class="user-name" id="custNameDisplay">Customer</span>
+                        <span class="user-id" id="custIdDisplay">ID: Loading...</span>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="dashboard-container">
+        
+        <!-- Welcome Card & Quick Info -->
+        <section class="welcome-card">
+            <div class="welcome-text">
+                <h2>Welcome to Your Customer Portal</h2>
+                <p>Track your active shipments, view order history, and request storage units in real time.</p>
+            </div>
+            <div class="delivery-address-card">
+                <h4>📍 Primary Delivery Address</h4>
+                <p id="deliveryAddressText">No delivery address added yet.</p>
+                <button class="small-btn" onclick="editAddress()">+ Add Address</button>
+            </div>
+        </section>
+
+        <!-- Quick Action Buttons -->
+        <section class="action-bar">
+            <button class="primary-btn" onclick="createNewOrder()">+ Create New Order</button>
+            <button class="secondary-btn" onclick="requestStorage()">📦 Request Storage Unit</button>
+        </section>
+
+        <!-- Summary Metrics -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">📦</div>
+                <div class="stat-details">
+                    <span class="stat-label">Total Orders</span>
+                    <span class="stat-value" id="totalOrders">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon yellow">⏳</div>
+                <div class="stat-details">
+                    <span class="stat-label">Pending Orders</span>
+                    <span class="stat-value" id="pendingOrders">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">🚚</div>
+                <div class="stat-details">
+                    <span class="stat-label">Active Shipments</span>
+                    <span class="stat-value" id="activeShipments">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-details">
+                    <span class="stat-label">Delivered Orders</span>
+                    <span class="stat-value" id="deliveredOrders">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">❌</div>
+                <div class="stat-details">
+                    <span class="stat-label">Cancelled Orders</span>
+                    <span class="stat-value" id="cancelledOrders">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Tracker -->
+        <section class="section-card tracker-card">
+            <h3>🚚 Current Shipment Status</h3>
+            <div class="empty-state-box" id="trackerEmptyState">
+                <div class="empty-icon">🚛</div>
+                <h4>No Active Shipments</h4>
+                <p>You currently have no orders in transit. Placed orders will display live tracking status here.</p>
+            </div>
+        </section>
+
+        <!-- Orders Table -->
+        <section class="section-card">
+            <div class="table-header">
+                <h3>📋 Order History & Product Details</h3>
+                <div class="table-controls">
+                    <input type="text" id="searchInput" placeholder="Search orders or products..." onkeyup="filterOrders()">
+                    <select id="statusFilter" onchange="filterOrders()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Dispatched">Dispatched / In Transit</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
+                            <th>Order ID</th>
+                            <th>Products Ordered</th>
+                            <th>Quantity</th>
+                            <th>Delivery Address</th>
+                            <th>Shipment Status</th>
+                            <th>Invoice / Payment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr>
+                            <td colspan="8" class="empty-table-cell">
+                                <div class="empty-table-state">
+                                    <span class="empty-icon-small">📭</span>
+                                    <p><strong>No order details found.</strong></p>
+                                    <p class="sub-empty">Your placed orders, shipment status, and invoice details will appear here.</p>
+                                    <button class="primary-btn small" onclick="createNewOrder()">+ Place First Order</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 WareFlow Inc. All rights reserved. | Smart Storage. Seamless Logistics.</p>
+    </footer>
+
+    <script src="customer_script.js"></script>
+</body>
+</html>
